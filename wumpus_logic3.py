@@ -1,4 +1,3 @@
-import time
 
 class Node:
     def __init__(self, id: tuple, *parents):
@@ -16,7 +15,8 @@ class Node:
 
 
 class WumpusLogic:
-    def __init__(self, start_node, move_func):
+    def __init__(self, start_node, move_func, data_func):
+        self.data = data_func
         start_node.states.add("V")
         # V represents that the node is visited
 
@@ -55,6 +55,7 @@ class WumpusLogic:
                 self.nodes[self.pos].parents[0].id[1]-self.pos[1]
             )
 
+            self.move(x,y)
             # -------------------
             self.pos = self.nodes[self.pos].parents[0].id
 
@@ -98,7 +99,7 @@ class WumpusLogic:
 
         #---GET DATA HERE---
         data = [0,0,0]
-        
+        data = self.data()
 
         #-------------------
 
@@ -137,7 +138,7 @@ class WumpusLogic:
         #---MOVEMENT CODE HERE---
         y,x = (adj_nodes[0][0]-self.pos[0], adj_nodes[0][1]-self.pos[1])
 
-
+        self.move(x,y)
 
         #------------------------
 
@@ -233,12 +234,12 @@ class WumpusLogic:
                 next_node = tuple(reversed(sorted(adj_nodes, reverse=False)[0]))
             
             # ---MOVEMENT CODE HERE---
-            movement = (
+            y,x = (
                 next_node[0]-self.pos[0],
                 next_node[1]-self.pos[1]
             )
 
-
+            self.move((x,y))
 
             # ------------------------
 

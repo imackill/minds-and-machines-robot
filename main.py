@@ -49,29 +49,40 @@ def moveToNextSquare():
     senseR = robot.ir_right()
 
 def getData():
+    
+    ble.send(43)
+    data = []
+    response = ble.read()
+    # receive data for gold
+    while response == 43:
+        response = ble.read()
+        time.sleep(0.5)
+    data.append(response)
+    
+    # data for smell 
     ble.send(43)
     response = ble.read()
     while response == 43:
         response = ble.read()
         time.sleep(0.5)
+    data.append(response)
+    
+    # data for breeze
+    ble.send(43)
+    response = ble.read()
+    while response == 43:
+        response = ble.read()
+        time.sleep(0.5)
+    data.append(response)
+    
+    return data
 
 def turnR():
     robot.m2_forward(20)
     robot.m1_backward(20)
     time.sleep(.7)
-moveToNextSquare()
-moveToNextSquare()
-moveToNextSquare()
-turnR()
-moveToNextSquare()
-moveToNextSquare()
-moveToNextSquare()
-turnR()
-moveToNextSquare()
-moveToNextSquare()
-moveToNextSquare()
-turnR()
-moveToNextSquare()
-moveToNextSquare()
-moveToNextSquare()
+
+data = getData()
+print(data)
+
 robot.stop()

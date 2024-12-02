@@ -1,6 +1,7 @@
 from nanonav import BLE, NanoBot
 import time
 from machine import Pin
+from wumpus_logic3 import Node, WumpusLogic
 
 ### test motors and encoders ###
 
@@ -92,14 +93,29 @@ def t180():
     robot.m2_backward(20)
     time.sleep(1.2)
 
-moveToNextSquare()
-turnL()
-robot.stop()
-time.sleep(1)
-moveToNextSquare()
-t180()
-robot.stop()
-time.sleep(1)
-moveToNextSquare()
+def move(vec):
+    match vec:
+        case ((0,1)):
+            turnR()
+            moveToNextSquare()
+            t180()
+            turnR()
+        case ((1,0)):
+            moveToNextSquare()
+        case ((0,-1)):
+            t180()
+            turnR()
+            moveToNextSquare()
+            turnR()
+        case ((-1,0)):
+            t180()
+            moveToNextSquare()
+            t180()
+    return
+
+start = Node((0,0))
+logic = WumpusLogic(start, move, getData)
+
+logic.loop()
 
 robot.stop()

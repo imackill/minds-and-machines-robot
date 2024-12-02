@@ -14,16 +14,16 @@ def recorrect():
     senseL = robot.ir_left()
     senseR = robot.ir_right()
     while senseL == False or senseR == False:
-        robot.m1_forward(15)
-        robot.m2_forward(15)
+        robot.m1_forward(17)
+        robot.m2_forward(17)
         time.sleep(.001)
         senseL = robot.ir_left()
         senseR = robot.ir_right()
         if senseL == False and senseR == True:
-            robot.m1_backward(15)
+            robot.m1_backward(17)
             time.sleep(.01)
         if senseL == True and senseR == False:
-            robot.m2_backward(15)
+            robot.m2_backward(17)
             time.sleep(.01)
         senseL = robot.ir_left()
         senseR = robot.ir_right()
@@ -42,14 +42,14 @@ def moveToNextSquare():
     robot.m2_backward(15)
     time.sleep(.5)
     recorrect()
-    robot.m1_forward(15)
-    robot.m2_forward(15)
-    time.sleep(3)
+    robot.m1_forward(17)
+    robot.m2_forward(17)
+    time.sleep(2)
     senseL = robot.ir_left()
     senseR = robot.ir_right()
 
 def getData():
-    
+    ble = BLE(name="Destroyer")
     ble.send(43)
     data = []
     response = ble.read()
@@ -58,15 +58,15 @@ def getData():
         response = ble.read()
         time.sleep(0.5)
     data.append(response)
-    
-    # data for smell 
+
+    # data for smell
     ble.send(43)
     response = ble.read()
     while response == 43:
         response = ble.read()
         time.sleep(0.5)
     data.append(response)
-    
+
     # data for breeze
     ble.send(43)
     response = ble.read()
@@ -74,7 +74,7 @@ def getData():
         response = ble.read()
         time.sleep(0.5)
     data.append(response)
-    
+
     return data
 
 def turnR():
@@ -82,7 +82,24 @@ def turnR():
     robot.m1_backward(20)
     time.sleep(.7)
 
-data = getData()
-print(data)
+def turnL():
+    robot.m1_forward(20)
+    robot.m2_backward(20)
+    time.sleep(.7)
+
+def t180():
+    robot.m1_forward(20)
+    robot.m2_backward(20)
+    time.sleep(1.2)
+
+moveToNextSquare()
+turnL()
+robot.stop()
+time.sleep(1)
+moveToNextSquare()
+t180()
+robot.stop()
+time.sleep(1)
+moveToNextSquare()
 
 robot.stop()

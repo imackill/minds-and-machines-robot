@@ -25,7 +25,7 @@ class WumpusLogic:
         # all nodes stored in a dictionary where their coordinates are the key
         self.nodes = { start_node.id: start_node }
 
-        self.safe = None
+        start_node.safe = True
 
         # pos is the robot's current position
         self.pos = start_node.id
@@ -49,6 +49,7 @@ class WumpusLogic:
             if(len(self.nodes[self.pos].parents) == 0):
                 return self._think
             # move back to parent
+            
             # ---MOVEMENT CODE---
             y,x = (
                 self.nodes[self.pos].parents[0].id[0]-self.pos[0],

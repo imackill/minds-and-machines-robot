@@ -10,6 +10,14 @@ Pin(28, Pin.OUT).on()
 # Create a NanoBot object
 robot = NanoBot()
 
+ble = BLE(name="Destroyer")
+
+ble.send(43)
+response = ble.read()
+while response == 43:
+    response = ble.read()
+    time.sleep(0.5)
+
 
 def recorrect():
     senseL = robot.ir_left()
@@ -50,31 +58,20 @@ def moveToNextSquare():
     senseR = robot.ir_right()
 
 def getData():
-    ble = BLE(name="Destroyer")
     ble.send(43)
-    data = []
     response = ble.read()
-    # receive data for gold
-    while response == 43:
-        response = ble.read()
-        time.sleep(0.5)
-    data.append(response)
 
-    # data for smell
-    ble.send(43)
-    response = ble.read()
     while response == 43:
         response = ble.read()
         time.sleep(0.5)
-    data.append(response)
+        
+    data = str(hex(response))[2:]
 
-    # data for breeze
-    ble.send(43)
-    response = ble.read()
-    while response == 43:
-        response = ble.read()
-        time.sleep(0.5)
-    data.append(response)
+    data = ('0'*(6-len(data)))+data
+
+    data = list(map(''.join, zip(*[iter(data)]*2)))
+
+    data = list(int(e) for e in data)
 
     return data
 
@@ -94,23 +91,22 @@ def t180():
     time.sleep(1.2)
 
 def move(vec):
-    match vec:
-        case ((0,1)):
-            turnR()
-            moveToNextSquare()
-            t180()
-            turnR()
-        case ((1,0)):
-            moveToNextSquare()
-        case ((0,-1)):
-            t180()
-            turnR()
-            moveToNextSquare()
-            turnR()
-        case ((-1,0)):
-            t180()
-            moveToNextSquare()
-            t180()
+    if vec == (0,1):
+        turnR()
+        moveToNextSquare()
+        t180()
+        turnR()
+    elif vec == (1,0):
+        moveToNextSquare()
+    elif vec == (0,-1):
+        t180()
+        turnR()
+        moveToNextSquare()
+        turnR()
+    elif vec ==  (-1,0):
+        t180()
+        moveToNextSquare()
+        t180()
     return
 
 start = Node((0,0))

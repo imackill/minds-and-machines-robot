@@ -56,7 +56,7 @@ class WumpusLogic:
                 self.nodes[self.pos].parents[0].id[1]-self.pos[1]
             )
 
-            self.move(x,y)
+            self.move((x,y))
             # -------------------
             self.pos = self.nodes[self.pos].parents[0].id
 
@@ -139,7 +139,7 @@ class WumpusLogic:
         #---MOVEMENT CODE HERE---
         y,x = (adj_nodes[0][0]-self.pos[0], adj_nodes[0][1]-self.pos[1])
 
-        self.move(x,y)
+        self.move((x,y))
 
         #------------------------
 

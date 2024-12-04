@@ -194,20 +194,8 @@ class WumpusLogic:
                 self.move((0, -1))
                 self.pos = next_node
             else:
-                self.mapped_nodes.add(self.pos)
-
-                # get set of unmapped safe nodes
-                node_set = set(filter(
-                    lambda node: node.safe == True,
-                    list(self.nodes.values())
-                ))-self.mapped_nodes
-
-
-                if(len(node_set) > 0):
-                    next_node = list(node_set)[0]
-                    last_node = self.pos
-
-                    self._pathToNode(next_node)
+                node = self.nodes[(0,0)]
+                self.mapped_nodes = set()
 
 
     def _think(self, args):

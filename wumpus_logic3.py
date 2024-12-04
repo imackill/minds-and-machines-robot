@@ -154,8 +154,6 @@ class WumpusLogic:
 
         last_node = self.pos
 
-        print(node.id)
-
         # while it isn't at destination
         while self.pos.id != node.id:
 
@@ -189,19 +187,19 @@ class WumpusLogic:
         
             if(dr > 0 and (-1, 0) in node_costs.keys()):
                 next_node = node_costs[(-1, 0)]
-                self.move((1, 0), True)
+                self.move((1, 0))
                 self.pos = next_node
             elif(dc > 0 and(0, -1) in node_costs.keys()):
                 next_node = node_costs[(0, -1)]
-                self.move((0, 1), True)
+                self.move((0, 1))
                 self.pos = next_node
             elif(dr < 0 and (1, 0) in node_costs.keys()):
                 next_node = node_costs[(1, 0)]
-                self.move((-1, 0), True)
+                self.move((-1, 0))
                 self.pos = next_node
             elif(dc < 0 and (0, 1) in node_costs.keys()):
                 next_node = node_costs[(0, 1)]
-                self.move((0, -1), True)
+                self.move((0, -1))
                 self.pos = next_node
             else:
                 raise Exception("Error!")
@@ -241,9 +239,7 @@ class WumpusLogic:
 
         
         if(self.posG != None):
-            print(f"Pathing to {self.posG.id}")
             self._pathToNode(self.posG)
-            print("At Gold!")
             return [None, None]
         elif(attempt == 0):
             return [self._think, [1, last_node]]

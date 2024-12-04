@@ -18,7 +18,7 @@ def _circle():
     t.right(90)
     t.penup()
 
-def move(vec, draw):
+def move(vec):
     if vec == (0,1):
         turn(1, "R")
         t.forward(50)
@@ -33,22 +33,23 @@ def move(vec, draw):
         turn(2, "R")
         t.forward(50)
         turn(2, "R")
-
-    if(draw):
-        _circle()
+    _circle()
     return
 
 def getData(pos):
     data = [0,0,0]# gold smell breeze
     # hard code locations here
     nbrs = list(e.id if e != None else None for e in logic.get_nbr_nodes(pos))
-    if((2,2) in nbrs):
+    # breeze
+    if((2,1) in nbrs):
         data[2] = 1
-    if((3,1) in nbrs):
+    if((1,3) in nbrs):
         data[2] = 1
-    if((2,0) in nbrs):
+    # wumpus
+    if((3,0) in nbrs):
         data[1] = 1
-    if((0,3) in nbrs):
+    # gold
+    if((3,2) in nbrs):
         data[0] = 1
     return data
 

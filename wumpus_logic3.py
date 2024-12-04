@@ -176,33 +176,38 @@ class WumpusLogic:
             for key, val in node_costs.items():
                 if(val == None or val.safe != True):
                     keys_to_del.add(key)
-            if(dr == 0):
-                keys_to_del.add((-1, 0))
-                keys_to_del.add((1, 0))
-            if(dc == 0):
-                keys_to_del.add((0, 1))
-                keys_to_del.add((0, -1))
-            for k in keys_to_del:
-                del node_costs[k]
         
-            if(dr > 0 and (-1, 0) in node_costs.keys()):
+            if(dr > 0 and (-1, 0) not in keys_to_del):
                 next_node = node_costs[(-1, 0)]
                 self.move((1, 0))
                 self.pos = next_node
-            elif(dc > 0 and(0, -1) in node_costs.keys()):
+            elif(dc > 0 and(0, -1) not in keys_to_del):
                 next_node = node_costs[(0, -1)]
                 self.move((0, 1))
                 self.pos = next_node
-            elif(dr < 0 and (1, 0) in node_costs.keys()):
+            elif(dr < 0 and (1, 0) not in keys_to_del):
                 next_node = node_costs[(1, 0)]
                 self.move((-1, 0))
                 self.pos = next_node
-            elif(dc < 0 and (0, 1) in node_costs.keys()):
+            elif(dc < 0 and (0, 1) not in keys_to_del):
                 next_node = node_costs[(0, 1)]
                 self.move((0, -1))
                 self.pos = next_node
             else:
-                raise Exception("Error!")
+                self.mapped_nodes.add(self.pos)
+
+                # get set of unmapped safe nodes
+                node_set = set(filter(
+                    lambda node: node.safe == True,
+                    list(self.nodes.values())
+                ))-self.mapped_nodes
+
+
+                if(len(node_set) > 0):
+                    next_node = list(node_set)[0]
+                    last_node = self.pos
+
+                    self._pathToNode(next_node)
 
 
     def _think(self, args):

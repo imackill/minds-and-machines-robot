@@ -149,8 +149,6 @@ class WumpusLogic:
 
     def _pathToNode(self, node):
 
-        print(f"moveing to {node.id} from {self.pos.id}")
-
         # get change in row and change in column
         # between current position and desired position
 

@@ -12,6 +12,25 @@ robot = NanoBot()
 
 ble = BLE(name="Destroyer")
 
+def batteryIsStupidHelp():
+    senseL = robot.ir_left()
+    senseR = robot.ir_right()
+    start = time.time()
+    while senseL == False and senseR == False:
+        robot.m1_forward(15)
+        robot.m2_forward(15)
+        senseL = robot.ir_left()
+        senseR = robot.ir_right()
+        time.sleep(0.01)
+    end = time.time()
+    length = end - start
+    robot.stop()
+    robot.m1_backward(15)
+    robot.m2_backward(15)
+    time.sleep(length)
+    robot.stop()
+
+    return length
 
 def recorrect():
     senseL = robot.ir_left()
@@ -32,26 +51,40 @@ def recorrect():
         senseR = robot.ir_right()
 
 def moveToNextSquare():
+    length = batteryIsStupidHelp()
     senseL = robot.ir_left()
     senseR = robot.ir_right()
+
+    # Code here
+    # Calculate the end time and time taken
     while senseL == False and senseR == False:
         robot.m1_forward(15)
         robot.m2_forward(15)
         senseL = robot.ir_left()
         senseR = robot.ir_right()
         time.sleep(0.01)
-
     robot.m1_backward(15)
     robot.m2_backward(15)
     time.sleep(.5)
     recorrect()
-    robot.m1_forward(17)
-    robot.m2_forward(17)
+    robot.m1_forward(15)
+    robot.m2_forward(15)
     time.sleep(2.5)
     senseL = robot.ir_left()
     senseR = robot.ir_right()
     robot.m1_forward(0)
     robot.m2_forward(0)
+    while senseL == False and senseR == False:
+        robot.m1_forward(15)
+        robot.m2_forward(15)
+        senseL = robot.ir_left()
+        senseR = robot.ir_right()
+        time.sleep(0.01)
+    robot.stop()
+    robot.m1_backward(15)
+    robot.m2_backward(15)
+    time.sleep(length)
+    robot.stop()
 
 def getData():
     ble.send(43)
@@ -112,18 +145,8 @@ def move(vec):
 def send_data(data):
     ble.send(hex(data))
 
-# logic = w.WumpusLogic(move, getData, send_data)
+#logic = w.WumpusLogic(move, getData, send_data)
 
-# logic.loop()
+#logic.loop()
 
-turnL()
-
-time.sleep(0.5)
-
-turnR()
-
-time.sleep(0.5)
-
-t180()
-
-robot.stop()
+moveToNextSquare()

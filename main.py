@@ -12,13 +12,6 @@ robot = NanoBot()
 
 ble = BLE(name="Destroyer")
 
-ble.send(43)
-response = ble.read()
-while response == 43:
-    response = ble.read()
-    time.sleep(0.5)
-
-
 def recorrect():
     senseL = robot.ir_left()
     senseR = robot.ir_right()
@@ -109,8 +102,14 @@ def move(vec):
         t180()
     return
 
-start = Node((0,0))
-logic = WumpusLogic(start, move, getData)
+ble.send(43)
+
+response = ble.read()
+while response == 43:
+    response = ble.read()
+    time.sleep(0.5)
+
+logic = WumpusLogic(move, getData)
 
 logic.loop()
 

@@ -102,6 +102,9 @@ def move(vec):
         t180()
     return
 
+def send_data(data):
+    ble.send(hex(data))
+
 ble.send(43)
 
 getData()

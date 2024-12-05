@@ -13,9 +13,10 @@ class Node:
         self.safe = None
 
 class WumpusLogic:
-    def __init__(self, move_func: function, data_func: function):
+    def __init__(self, move_func, data_func, send_data):
         self.move = move_func
         self.data = data_func
+        self.send_data = send_data
 
         self.nodes = {
             (0,0) : Node((0,0))
@@ -104,12 +105,12 @@ class WumpusLogic:
         self.pos.states |= state_set
 
         # mark ndoes as safe if applicable
-        for node in available_nodes:
+        for i in range(len(available_nodes)):
             if(self.posW != None and len(self.posP) == 2):
-                if(node not in self.posP and node != self.posW):
-                    node.safe = True
-            elif("s" not in state_set and "b" not in state_set or node in self.mapped_nodes):
-                node.safe = True
+                if(available_nodes[i] not in self.posP and available_nodes[i] != self.posW):
+                    available_nodes[i].safe = True
+            elif("s" not in state_set and "b" not in state_set or available_nodes[i] in self.mapped_nodes):
+                available_nodes[i].safe = True
 
         movable_nodes = list(filter(
             lambda node: node.safe == True and node not in self.mapped_nodes,
@@ -173,6 +174,7 @@ class WumpusLogic:
             
             # remove nonexistent or bad nodes
             keys_to_del = set()
+
             for key, val in node_costs.items():
                 if(val == None or val.safe != True):
                     keys_to_del.add(key)
@@ -194,8 +196,20 @@ class WumpusLogic:
                 self.move((0, -1))
                 self.pos = next_node
             else:
-                node = self.nodes[(0,0)]
-                self.mapped_nodes = set()
+                self._pathToNode(self.nodes[(0,0)])
+                if(self.posW != None):
+                    node = self._shootWumpus()
+                else:
+                    raise Exception(f"Error at {self.pos.id}: NOT SOLVABLE")
+            
+    
+    def _shootWumpus(self):
+        w_neighbors = self.get_nodes_state('s')
+        self.send_data(999)
+        self.data()
+        if(len(w_neighbors) >= 1):
+            self.posW.safe = True
+            return self.nodes[w_neighbors[0].id]
 
 
     def _think(self, args):
@@ -237,11 +251,13 @@ class WumpusLogic:
         elif(attempt == 0):
             return [self._think, [1, last_node]]
         elif(attempt == 1):
+            safe_nodes = []
             # check if dangerous tiles are known
             if(self.posW != None and len(self.posP) == 2):
-                for node in self.nodes.values():
+                for i in range(len(self.nodes.values())):
+                    node = list(self.nodes.values())[i]
                     if(node not in self.posP and node != self.posW):
-                        self.nodes[node.id].safe = True
+                        safe_nodes.append(self.nodes[node.id].safe)
             return [self._map, last_node]
 
         # puzzle would be impossible
@@ -363,9 +379,10 @@ class WumpusLogic:
             if(pits[0] not in self.posP):
                 self.posP.append(pits[0])
                 return True
-            for node in self.get_nbr_nodes(pits[0]):
+            pit_nbrs = self.nodes.values()
+            for i in range(len(pit_nbrs)):
                 if(node != None):
-                    node.safe = True
+                    pits[i].safe = True
             else:
                 # no new data gained
                 return False

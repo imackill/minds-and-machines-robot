@@ -45,6 +45,8 @@ def getData(pos):
         data[2] = 1
     if((1,3) in nbrs):
         data[2] = 1
+    if((2,2) in nbrs):
+        data[2] = 1
     # wumpus
     if((3,0) in nbrs):
         data[1] = 1
@@ -52,6 +54,9 @@ def getData(pos):
     if((3,2) in nbrs):
         data[0] = 1
     return data
+
+def send_data(data):
+    print(data)
 
 t.speed(1000)
 
@@ -97,6 +102,6 @@ turn(1, "L")
 
 _circle()
 
-logic = w.WumpusLogic(move, getData)
+logic = w.WumpusLogic(move, getData, send_data)
 
 logic.loop()

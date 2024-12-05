@@ -1,7 +1,7 @@
 from nanonav import BLE, NanoBot
 import time
 from machine import Pin
-from wumpus_logic3 import Node, WumpusLogic
+import wumpus_logic3 as w
 
 ### test motors and encoders ###
 
@@ -57,7 +57,7 @@ def getData():
     while response == 43:
         response = ble.read()
         time.sleep(0.5)
-        
+
     data = str(hex(response))[2:]
 
     data = ('0'*(6-len(data)))+data
@@ -109,7 +109,7 @@ while response == 43:
     response = ble.read()
     time.sleep(0.5)
 
-logic = WumpusLogic(move, getData)
+logic = w.WumpusLogic(move, getData)
 
 logic.loop()
 

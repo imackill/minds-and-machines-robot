@@ -66,8 +66,6 @@ def getData():
 
     data = list(int(e) for e in data)
 
-    print(data)
-
     return data
 
 def turnR():

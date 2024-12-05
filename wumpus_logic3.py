@@ -334,6 +334,7 @@ class WumpusLogic:
 
         if(len(final_set) == 1):
             self.posW = list(final_set)[0]
+            self._shootWumpus()
             return True
         else:
             # no conclusion was made

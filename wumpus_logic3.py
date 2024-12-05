@@ -126,7 +126,7 @@ class WumpusLogic:
             # call pathtonode
             self._pathToNode(next_node)
             return [self._map, last_node]
-        
+
         else:
             self.mapped_nodes.add(self.pos)
 
@@ -144,9 +144,9 @@ class WumpusLogic:
                 self._pathToNode(next_node)
 
                 return [self._map, last_node]
-        
+
         return [self._think, [0, last_node]]# 0 represents this is the first though
-            
+
 
     def _pathToNode(self, node):
 
@@ -171,14 +171,14 @@ class WumpusLogic:
                 (1, 0): available_nodes[2],
                 (0, 1): available_nodes[3],
             }
-            
+
             # remove nonexistent or bad nodes
             keys_to_del = set()
 
             for key, val in node_costs.items():
                 if(val == None or val.safe != True):
                     keys_to_del.add(key)
-        
+
             if(dr > 0 and (-1, 0) not in keys_to_del):
                 next_node = node_costs[(-1, 0)]
                 self.move((1, 0))
@@ -201,8 +201,8 @@ class WumpusLogic:
                     node = self._shootWumpus()
                 else:
                     raise Exception(f"Error at {self.pos.id}: NOT SOLVABLE")
-            
-    
+
+
     def _shootWumpus(self):
         w_neighbors = self.get_nodes_state('s')
         self.send_data(999)
@@ -244,7 +244,7 @@ class WumpusLogic:
         if(len(b_nodes) > 0):
             p_stat = self._findPits(b_nodes)
 
-        
+
         if(self.posG != None):
             self._pathToNode(self.posG)
             return [None, None]
@@ -269,7 +269,7 @@ class WumpusLogic:
         # return True if we already know the location of the gold
         if(self.posG != None):
             return True
-        
+
         g_cands = []
 
         # get possible gold nodes
@@ -303,7 +303,7 @@ class WumpusLogic:
                 for s in states:
                     if(len(s) == 0):
                         invalid_cands.add(node)
-            
+
             self.posG = list(final_set - invalid_cands)[0]
             return True
         else:
@@ -370,7 +370,7 @@ class WumpusLogic:
             lambda s: len(s) != 0,
             node_nbrs
         ))
-        
+
         pits = list(list(e)[0] for e in node_nbrs)
         pits = list(set(pits))
 
@@ -381,12 +381,12 @@ class WumpusLogic:
                 return True
             pit_nbrs = self.nodes.values()
             for i in range(len(pit_nbrs)):
-                if(node != None):
-                    pits[i].safe = True
+                if(pit_nbrs[i] != None):
+                    pit_nbrs[i].safe = True
             else:
                 # no new data gained
                 return False
-        
+
         elif(len(pits) == 2):
             # set global pits to be pits
             self.posP = pits
@@ -394,13 +394,13 @@ class WumpusLogic:
                 if(node != None):
                     node.safe = True if node.safe != False else False
             return True
-        
+
         elif(len(pits) > 2):
             pit_locations = list(pit.id for pit in pits)
             print(pit_locations)
             # FIXME: remember to add logic for picking between overlap
             return True
-        
+
         # no data gained from this run through
         # len(pits) == 0
         return False
@@ -412,3 +412,5 @@ class WumpusLogic:
         phase, args = self._map(args)
         while phase != None:
             phase, args = phase(args)
+
+        self._pathToNode(self.nodes[(0,0)])

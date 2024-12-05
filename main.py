@@ -12,6 +12,9 @@ robot = NanoBot()
 
 ble = BLE(name="Destroyer")
 
+turn_time = 0.7
+forward_speed = 15
+
 def recorrect():
     senseL = robot.ir_left()
     senseR = robot.ir_right()
@@ -34,8 +37,8 @@ def moveToNextSquare():
     senseL = robot.ir_left()
     senseR = robot.ir_right()
     while senseL == False and senseR == False:
-        robot.m1_forward(15)
-        robot.m2_forward(15)
+        robot.m1_forward(forward_speed)
+        robot.m2_forward(forward_speed)
         senseL = robot.ir_left()
         senseR = robot.ir_right()
         time.sleep(0.01)
@@ -46,9 +49,11 @@ def moveToNextSquare():
     recorrect()
     robot.m1_forward(17)
     robot.m2_forward(17)
-    time.sleep(2)
+    time.sleep(2.5)
     senseL = robot.ir_left()
     senseR = robot.ir_right()
+    robot.m1_forward(0)
+    robot.m2_forward(0)
 
 def getData():
     ble.send(43)
@@ -71,29 +76,33 @@ def getData():
 def turnR():
     robot.m2_forward(20)
     robot.m1_backward(20)
-    time.sleep(.7)
+    time.sleep(turn_time)
+    robot.m1_forward(0)
+    robot.m2_forward(0)
 
 def turnL():
     robot.m1_forward(20)
     robot.m2_backward(20)
-    time.sleep(.7)
+    time.sleep(turn_time)
+    robot.m1_forward(0)
+    robot.m2_forward(0)
 
 def t180():
     robot.m1_forward(20)
     robot.m2_backward(20)
-    time.sleep(1.2)
+    time.sleep(turn_time*2)
+    robot.m1_forward(0)
+    robot.m2_forward(0)
 
 def move(vec):
     if vec == (0,1):
         turnR()
         moveToNextSquare()
-        t180()
-        turnR()
+        turnL()
     elif vec == (1,0):
         moveToNextSquare()
     elif vec == (0,-1):
-        t180()
-        turnR()
+        turnL()
         moveToNextSquare()
         turnR()
     elif vec ==  (-1,0):
@@ -104,10 +113,6 @@ def move(vec):
 
 def send_data(data):
     ble.send(hex(data))
-
-ble.send(43)
-
-getData()
 
 logic = w.WumpusLogic(move, getData, send_data)
 

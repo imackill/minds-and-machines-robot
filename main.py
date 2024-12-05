@@ -104,10 +104,7 @@ def move(vec):
 
 ble.send(43)
 
-response = ble.read()
-while response == 43:
-    response = ble.read()
-    time.sleep(0.5)
+getData()
 
 logic = w.WumpusLogic(move, getData)
 

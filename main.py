@@ -109,7 +109,7 @@ ble.send(43)
 
 getData()
 
-logic = w.WumpusLogic(move, getData)
+logic = w.WumpusLogic(move, getData, send_data)
 
 logic.loop()
 

@@ -90,7 +90,7 @@ class WumpusLogic:
         ))
 
         # get data
-        data = self.data(self.pos)
+        data = self.data()
 
         # data is GOLD, SMELL, BREEZE
 
@@ -148,6 +148,8 @@ class WumpusLogic:
             
 
     def _pathToNode(self, node):
+
+        print(f"moveing to {node.pos} from {self.pos}")
 
         # get change in row and change in column
         # between current position and desired position

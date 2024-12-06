@@ -135,12 +135,14 @@ def move(vec: tuple):
         elif(v_dict[vec] < direction[0]):
             turnL()
             direction[0] -= 90
-        time.sleep(0.1)
+        time.sleep(0.5)
     moveToNextSquare()
 
 def send_data(data):
     ble.send(hex(data))
 
-logic = w.WumpusLogic(move, getData, send_data)
+# logic = w.WumpusLogic(move, getData, send_data)
 
-logic.loop()
+# logic.loop()
+
+turnR()

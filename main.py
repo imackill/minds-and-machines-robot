@@ -156,5 +156,5 @@ def send_data(data):
 #logic.loop()
 
 move((1,0), direction)
-move((1,0), direction)
+move((0,1), direction)
 move((0,1), direction)

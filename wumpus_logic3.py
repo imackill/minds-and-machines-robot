@@ -260,7 +260,7 @@ class WumpusLogic:
                         safe_nodes.append(self.nodes[node.id].safe)
             return [self._map, last_node]
 
-        # puzzle would be impossible
+        # puzzle would be impossible so it just errors otu
         elif(g_stat == False and s_stat == False and p_stat == False):
             raise Exception("Impossible to Solve")
 
@@ -349,7 +349,7 @@ class WumpusLogic:
         if(len(self.posP) == 2):
             return True
 
-        # get intersection fo neighbors for all possible pairs of nodes
+        # get intersection of neighbors for all possible pairs of nodes
         # so for a set of nodes {a, b, c, d}
         # return [nbrs(a) & nbrs(b), nbrs(b) & nbrs(c), etc...]
 
@@ -380,13 +380,10 @@ class WumpusLogic:
             if(pits[0] not in self.posP):
                 self.posP.append(pits[0])
                 return True
-            pit_nbrs = self.nodes.values()
-            for i in range(len(pit_nbrs)):
-                if(pit_nbrs[i] != None):
-                    pit_nbrs[i].safe = True
             else:
                 # no new data gained
-                if(self.posW != None): self._shootWumpus()
+                if(self.posW != None):
+                    self._shootWumpus()
                 return False
 
         elif(len(pits) == 2):

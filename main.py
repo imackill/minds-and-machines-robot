@@ -53,10 +53,9 @@ def recorrect():
         senseR = robot.ir_right()
 
 def moveToNextSquare():
-    length = batteryIsStupidHelp()
+    length = 0.7
     senseL = robot.ir_left()
     senseR = robot.ir_right()
-
     # Code here
     # Calculate the end time and time taken
     while senseL == False and senseR == False:
@@ -128,9 +127,8 @@ def t180():
     robot.m2_forward(0)
 
 def move(vec: tuple):
-    print(direction)
-    if(direction[0] == -180): direction[0] = abs(direction[0])
-    if(direction[0] < -180): direction[0] += 360
+    if(direction[0] <= -180):
+        direction[0] += 360
     v_dict = {
         (1,0): 0,
         (0,1): 90,
@@ -141,11 +139,9 @@ def move(vec: tuple):
         if(v_dict[vec] > direction[0]):
             turnR()
             direction[0] += 90
-            return
-        elif(v_dict[vec] > direction[0]):
+        elif(v_dict[vec] < direction[0]):
             turnL()
             direction[0] -= 90
-            return
         time.sleep(0.1)
     moveToNextSquare()
 

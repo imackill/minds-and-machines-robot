@@ -386,6 +386,7 @@ class WumpusLogic:
                     pit_nbrs[i].safe = True
             else:
                 # no new data gained
+                if(self.posW != None): self._shootWumpus()
                 return False
 
         elif(len(pits) == 2):

@@ -10,6 +10,8 @@ Pin(28, Pin.OUT).on()
 # Create a NanoBot object
 robot = NanoBot()
 
+direction = 0
+
 ble = BLE(name="Destroyer")
 
 def batteryIsStupidHelp():
@@ -125,22 +127,25 @@ def t180():
     robot.m1_forward(0)
     robot.m2_forward(0)
 
-def move(vec):
-    if vec == (0,1):
-        turnR()
-        moveToNextSquare()
-        turnL()
-    elif vec == (1,0):
-        moveToNextSquare()
-    elif vec == (0,-1):
-        turnL()
-        moveToNextSquare()
-        turnR()
-    elif vec ==  (-1,0):
-        t180()
-        moveToNextSquare()
-        t180()
-    return
+def move(vec: tuple):
+    if(direction == -180): direction = abs(direction)
+    v_dict = {
+        (1,0): 0,
+        (0,1): 90,
+        (-1, 0): 180,
+        (0, -1): -90,
+    }
+    while direction != v_dict[vec]:
+        if(v_dict[vec] > direction):
+            turnR()
+            direction += 90
+            return
+        elif(v_dict[vec] > direction):
+            turnL()
+            direction -= 90
+            return
+        time.sleep(0.1)
+    moveToNextSquare()
 
 def send_data(data):
     ble.send(hex(data))
@@ -149,4 +154,8 @@ def send_data(data):
 
 #logic.loop()
 
-moveToNextSquare()
+move((1,0))
+
+move((0,1))
+
+move((0,1))

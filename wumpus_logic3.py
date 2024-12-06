@@ -13,11 +13,10 @@ class Node:
         self.safe = None
 
 class WumpusLogic:
-    def __init__(self, move_func, data_func, send_data, direction):
+    def __init__(self, move_func, data_func, send_data):
         self.move = move_func
         self.data = data_func
         self.send_data = send_data
-        self.direction = direction
 
         self.nodes = {
             (0,0) : Node((0,0))

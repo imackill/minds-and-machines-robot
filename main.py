@@ -127,21 +127,22 @@ def t180():
     robot.m1_forward(0)
     robot.m2_forward(0)
 
-def move(vec: tuple, direction: list):
-    if(direction == -180): direction[0] = abs(direction[0])
-    if(direction < -180): direction[0] += 360
+def move(vec: tuple):
+    print(direction)
+    if(direction[0] == -180): direction[0] = abs(direction[0])
+    if(direction[0] < -180): direction[0] += 360
     v_dict = {
         (1,0): 0,
         (0,1): 90,
         (-1, 0): 180,
         (0, -1): -90,
     }
-    while direction != v_dict[vec]:
-        if(v_dict[vec] > direction):
+    while direction[0] != v_dict[vec]:
+        if(v_dict[vec] > direction[0]):
             turnR()
             direction[0] += 90
             return
-        elif(v_dict[vec] > direction):
+        elif(v_dict[vec] > direction[0]):
             turnL()
             direction[0] -= 90
             return
@@ -155,6 +156,6 @@ def send_data(data):
 
 #logic.loop()
 
-move((1,0), direction)
-move((0,1), direction)
-move((0,1), direction)
+move((1,0))
+move((0,1))
+move((0,1))

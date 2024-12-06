@@ -53,7 +53,7 @@ def recorrect():
         senseR = robot.ir_right()
 
 def moveToNextSquare():
-    length = 0.7
+    length = batteryIsStupidHelp()
     senseL = robot.ir_left()
     senseR = robot.ir_right()
     # Code here
@@ -116,13 +116,6 @@ def turnL():
     robot.m1_forward(20)
     robot.m2_backward(20)
     time.sleep(.7)
-    robot.m1_forward(0)
-    robot.m2_forward(0)
-
-def t180():
-    robot.m1_forward(20)
-    robot.m2_backward(20)
-    time.sleep(1.2)
     robot.m1_forward(0)
     robot.m2_forward(0)
 

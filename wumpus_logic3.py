@@ -181,19 +181,19 @@ class WumpusLogic:
 
             if(dr > 0 and (-1, 0) not in keys_to_del):
                 next_node = node_costs[(-1, 0)]
-                self.move((1, 0), self.direction)
+                self.move((1, 0))
                 self.pos = next_node
             elif(dc > 0 and(0, -1) not in keys_to_del):
                 next_node = node_costs[(0, -1)]
-                self.move((0, 1), self.direction)
+                self.move((0, 1))
                 self.pos = next_node
             elif(dr < 0 and (1, 0) not in keys_to_del):
                 next_node = node_costs[(1, 0)]
-                self.move((-1, 0), self.direction)
+                self.move((-1, 0))
                 self.pos = next_node
             elif(dc < 0 and (0, 1) not in keys_to_del):
                 next_node = node_costs[(0, 1)]
-                self.move((0, -1), self.direction)
+                self.move((0, -1))
                 self.pos = next_node
             else:
                 self._pathToNode(self.nodes[(0,0)])

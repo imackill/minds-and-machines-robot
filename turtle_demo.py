@@ -36,7 +36,8 @@ def move(vec):
     _circle()
     return
 
-def getData(pos):
+def getData():
+    pos = logic.pos
     data = [0,0,0]# gold smell breeze
     # hard code locations here
     nbrs = list(e.id if e != None else None for e in logic.get_nbr_nodes(pos))

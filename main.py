@@ -152,10 +152,6 @@ def move(vec: tuple):
 def send_data(data):
     ble.send(hex(data))
 
-#logic = w.WumpusLogic(move, getData, send_data)
+logic = w.WumpusLogic(move, getData, send_data)
 
-#logic.loop()
-
-move((1,0))
-move((0,1))
-move((0,1))
+logic.loop()

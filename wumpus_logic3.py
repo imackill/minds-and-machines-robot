@@ -397,9 +397,12 @@ class WumpusLogic:
         elif(len(pits) > 2):
             pit_locations = list(pit.id for pit in pits)
             print(pit_locations)
-            # FIXME: remember to add logic for picking between overlap
+            # this probably fixes this????
+            if(self.posW != None):
+                self._shootWumpus()
+            # fml I'm done
             return True
-
+        
         # no data gained from this run through
         # len(pits) == 0
         return False

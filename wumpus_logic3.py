@@ -13,10 +13,11 @@ class Node:
         self.safe = None
 
 class WumpusLogic:
-    def __init__(self, move_func, data_func, send_data):
+    def __init__(self, move_func, data_func, send_data, direction):
         self.move = move_func
         self.data = data_func
         self.send_data = send_data
+        self.direction = direction
 
         self.nodes = {
             (0,0) : Node((0,0))
@@ -181,19 +182,19 @@ class WumpusLogic:
 
             if(dr > 0 and (-1, 0) not in keys_to_del):
                 next_node = node_costs[(-1, 0)]
-                self.move((1, 0))
+                self.move((1, 0), self.direction)
                 self.pos = next_node
             elif(dc > 0 and(0, -1) not in keys_to_del):
                 next_node = node_costs[(0, -1)]
-                self.move((0, 1))
+                self.move((0, 1), self.direction)
                 self.pos = next_node
             elif(dr < 0 and (1, 0) not in keys_to_del):
                 next_node = node_costs[(1, 0)]
-                self.move((-1, 0))
+                self.move((-1, 0), self.direction)
                 self.pos = next_node
             elif(dc < 0 and (0, 1) not in keys_to_del):
                 next_node = node_costs[(0, 1)]
-                self.move((0, -1))
+                self.move((0, -1), self.direction)
                 self.pos = next_node
             else:
                 self._pathToNode(self.nodes[(0,0)])

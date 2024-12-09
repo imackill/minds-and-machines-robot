@@ -200,7 +200,9 @@ class WumpusLogic:
                 if(self.posW != None):
                     node = self._shootWumpus()
                 else:
-                    raise Exception(f"Error at {self.pos.id}: NOT SOLVABLE")
+                    self._think()
+                    if(self.posW != None):
+                        node = self._shootWumpus()
 
 
     def _shootWumpus(self):

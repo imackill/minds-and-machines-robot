@@ -14,25 +14,25 @@ direction = [0]
 
 ble = BLE(name="Destroyer")
 
-def batteryIsStupidHelp():
-    senseL = robot.ir_left()
-    senseR = robot.ir_right()
-    start = time.time()
-    while senseL == False and senseR == False:
-        robot.m1_forward(15)
-        robot.m2_forward(15)
-        senseL = robot.ir_left()
-        senseR = robot.ir_right()
-        time.sleep(0.01)
-    end = time.time()
-    length = end - start
-    robot.stop()
-    robot.m1_backward(15)
-    robot.m2_backward(15)
-    time.sleep(length)
-    robot.stop()
+# def batteryIsStupidHelp():
+#     senseL = robot.ir_left()
+#     senseR = robot.ir_right()
+#     start = time.time()
+#     while senseL == False and senseR == False:
+#         robot.m1_forward(15)
+#         robot.m2_forward(15)
+#         senseL = robot.ir_left()
+#         senseR = robot.ir_right()
+#         time.sleep(0.01)
+#     end = time.time()
+#     length = end - start
+#     robot.stop()
+#     robot.m1_backward(15)
+#     robot.m2_backward(15)
+#     time.sleep(length)
+#     robot.stop()
 
-    return length
+#     return length
 
 def recorrect():
     senseL = robot.ir_left()
@@ -53,7 +53,6 @@ def recorrect():
         senseR = robot.ir_right()
 
 def moveToNextSquare():
-    length = batteryIsStupidHelp()
     senseL = robot.ir_left()
     senseR = robot.ir_right()
     # Code here
@@ -68,23 +67,11 @@ def moveToNextSquare():
     robot.m2_backward(15)
     time.sleep(.5)
     recorrect()
-    robot.m1_forward(15)
-    robot.m2_forward(15)
-    time.sleep(2.5)
     senseL = robot.ir_left()
     senseR = robot.ir_right()
-    robot.m1_forward(0)
-    robot.m2_forward(0)
-    while senseL == False and senseR == False:
-        robot.m1_forward(15)
-        robot.m2_forward(15)
-        senseL = robot.ir_left()
-        senseR = robot.ir_right()
-        time.sleep(0.01)
-    robot.stop()
-    robot.m1_backward(15)
-    robot.m2_backward(15)
-    time.sleep(length)
+    robot.m1_forward(15)
+    robot.m2_forward(15)
+    time.sleep(2)
     robot.stop()
 
 def getData():
@@ -106,18 +93,32 @@ def getData():
     return data
 
 def turnR():
-    robot.m2_forward(20)
-    robot.m1_backward(20)
-    time.sleep(.7)
-    robot.m1_forward(0)
-    robot.m2_forward(0)
+    robot.set_enc2(0)
+    i = False
+    while i == False:
+        robot.m2_forward(20)
+        robot.m1_backward(20)
+        if robot.get_enc2() > 135:
+            robot.stop()
+            break
+        time.sleep(.01)
+    time.sleep(1)
+    robot.stop()
+
 
 def turnL():
-    robot.m1_forward(20)
-    robot.m2_backward(20)
-    time.sleep(.7)
-    robot.m1_forward(0)
-    robot.m2_forward(0)
+    robot.set_enc1(0)
+    i = False
+    while i == False:
+        robot.m1_forward(20)
+        robot.m2_backward(20)
+        if robot.get_enc1() > 135:
+            robot.stop()
+            break
+        time.sleep(.01)
+    time.sleep(1)
+    robot.stop()
+    
 
 def move(vec: tuple):
     if(direction[0] <= -180):
@@ -142,5 +143,4 @@ def send_data(data):
     ble.send(hex(data))
 
 logic = w.WumpusLogic(move, getData, send_data)
-
 logic.loop()
